@@ -1,0 +1,8 @@
+"%s is required","%s是必填项"
+"%s is an invalid param","%s参数无效"
+"%s's length is invalid(%s-%s)","%s的长度无效（%s-%s）"
+"%s is an invalid plain text(a-z, A-Z,0-9 and _)","%s不符合纯文本规则（大小写字母数字和下划线）"
+"%s should be integer","%s必须是整数"
+"%s should be in %s","%s的值必须取自于%s"
+"%s is invalid","%s无效"
+"%s is an invalid email address","%s是无效的电子邮件地址"
