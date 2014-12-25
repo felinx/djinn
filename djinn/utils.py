@@ -142,6 +142,9 @@ def get_column_values(rows, column=None):
 
 
 def pick_row_attrs(row, attrs):
+    if not row or not isinstance(row, dict):
+        return row
+
     row_ = Row()
     for name in attrs:
         row_[name] = row.get(name, None)
@@ -206,7 +209,7 @@ def compare_version(v_a, v_b):
         if v:
             for x in re.sub(r'(\.0+)*$', '', v).split("."):
                 try:
-                    x = int(x) # 001 to 1
+                    x = int(x)  # 001 to 1
                     vv.append(x)
                 except ValueError:
                     # may have characters in the tail sometimes
