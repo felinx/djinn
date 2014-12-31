@@ -72,7 +72,7 @@ def key_gen(key="", func=None, args_as_key=True, *args, **kw):
              else str(v) for v in c]
         code.update("".join(c))
 
-        c = ["%s=%s" % (k, v) for k, v in kw]
+        c = ["%s=%s" % (k, v) for k, v in kw.iteritems()]
         c.sort()
         code.update("".join(c))
 
