@@ -83,7 +83,7 @@ class HTTPAPIError(HTTPError):
 
 # default errors
 _unknow_error = "unknow_error"
-_unknow_message = "未知错误,请稍后重试"
+_unknow_message = "未知错误,请稍后再试"
 _error_types = {400: "bad_request",
                 401: "unauthorized",
                 403: "forbidden",
@@ -100,8 +100,8 @@ _error_messages = {400: "请求参数错误",
                    403: "您未登录或无权访问",
                    404: "资源不存在",
                    405: "客户端请求方式错误",
-                   500: "服务器这会开了小差，请稍后再试",
-                   1001: "警告错误提示",
-                   1002: "接口不兼容,请升级版本",
-                   1003: "服务器维护中",
+                   500: "服务器这会开了点小差，程序猿正加紧修复中，请稍后再试",
+                   1001: "错误警告",
+                   1002: "接口不兼容，请升级版本",
+                   1003: "服务器维护中，请稍后再试",
                    9999: _unknow_error}
