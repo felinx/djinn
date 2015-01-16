@@ -22,6 +22,8 @@ from tornado.escape import utf8
 from tornado.options import define, options
 
 define("cache_key_prefix", "", str, "cache key prefix to avoid key conflict")
+define("cache_key_prefix_another", "", str,
+       "another cache in different cache prefix, should be delete at the same time")
 define("cache_enabled", True, bool, "whether cache is enabled")
 manager = None
 
@@ -46,8 +48,16 @@ def cache(key=None, timeout=3600, args_as_key=True):
 
 
 def delete(key):
-    _key = key_gen(key)
-    manager.delete(_key)
+    if options.cache_key_prefix:
+        key = "%s:%s" % (options.cache_key_prefix, key)
+        manager.delete(key)
+    else:
+        manager.delete(key)
+
+    if options.cache_key_prefix_another:
+        another_key = "%s:%s" % (options.cache_key_prefix_another, key)
+        if another_key != key:
+            manager.delete(another_key)
 
 
 def key_gen(key="", func=None, args_as_key=True, *args, **kw):
