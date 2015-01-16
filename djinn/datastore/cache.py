@@ -48,14 +48,13 @@ def cache(key=None, timeout=3600, args_as_key=True):
 
 
 def delete(key):
+    key_ = key
     if options.cache_key_prefix:
-        key = "%s:%s" % (options.cache_key_prefix, key)
-        manager.delete(key)
-    else:
-        manager.delete(key)
+        key = "%s:%s" % (options.cache_key_prefix, key_)
+    manager.delete(key)
 
     if options.cache_key_prefix_another:
-        another_key = "%s:%s" % (options.cache_key_prefix_another, key)
+        another_key = "%s:%s" % (options.cache_key_prefix_another, key_)
         if another_key != key:
             manager.delete(another_key)
 
