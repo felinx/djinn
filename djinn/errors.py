@@ -31,6 +31,31 @@ ERROR_DEPRECATED = 1002
 ERROR_MAINTAINING = 1003
 ERROR_UNKNOWN_ERROR = 9999
 
+# default errors
+_unknown_error = "unknow_error"
+_unknown_message = "Unknown error"
+_error_types = {400: "bad_request",
+                401: "unauthorized",
+                403: "forbidden",
+                404: "not_found",
+                405: "method_not_allowed",
+                500: "internal_server_error",
+                1001: "warning",
+                1002: "deprecated",
+                1003: "maintaining",
+                9999: _unknown_error}
+
+ERROR_MESSAGES = {400: "Bad request",
+                  401: "Unauthorized",
+                  403: "Forbidden",
+                  404: "Not found",
+                  405: "Method not allowed",
+                  500: "Internal server error",
+                  1001: "Warning",
+                  1002: "Deprecated",
+                  1003: "Maintaining",
+                  9999: _unknown_message}
+
 
 class DjinnError(Exception):
     pass
@@ -64,9 +89,9 @@ class HTTPAPIError(HTTPError):
                                            log_message=message, *args, **kwargs)
 
         self.error = error if error else \
-            _error_types.get(self.status_code, _unknow_error)
+            _error_types.get(self.status_code, _unknown_error)
         self.message = message if message else \
-            _error_messages.get(self.status_code, _unknow_message)
+            ERROR_MESSAGES.get(self.status_code, _unknown_message)
         self.data = data if data is not None else {}
 
     def __str__(self):
@@ -79,29 +104,3 @@ class HTTPAPIError(HTTPError):
             err["meta"]["message"] = self.message % self.args
 
         return escape.json_encode(err)
-
-
-# default errors
-_unknow_error = "unknow_error"
-_unknow_message = "未知错误,请稍后再试"
-_error_types = {400: "bad_request",
-                401: "unauthorized",
-                403: "forbidden",
-                404: "not_found",
-                405: "method_not_allowed",
-                500: "internal_server_error",
-                1001: "warning",
-                1002: "deprecated",
-                1003: "maintaining",
-                9999: _unknow_error}
-
-_error_messages = {400: "Bad request",
-                   401: "Unauthorized",
-                   403: "Forbidden",
-                   404: "Not found",
-                   405: "Method not allowed",
-                   500: "Internal server error",
-                   1001: "Warning",
-                   1002: "Deprecated",
-                   1003: "Maintaining",
-                   9999: "Unknown error"}
