@@ -95,13 +95,13 @@ _error_types = {400: "bad_request",
                 1003: "maintaining",
                 9999: _unknow_error}
 
-_error_messages = {400: "请求参数错误",
-                   401: "用户未登录",
-                   403: "您未登录或无权访问",
-                   404: "资源不存在",
-                   405: "客户端请求方式错误",
-                   500: "服务器这会开了点小差，程序猿正加紧修复中，请稍后再试",
-                   1001: "错误警告",
-                   1002: "接口不兼容，请升级版本",
-                   1003: "服务器维护中，请稍后再试",
-                   9999: _unknow_error}
+_error_messages = {400: "Bad request",
+                   401: "Unauthorized",
+                   403: "Forbidden",
+                   404: "Not found",
+                   405: "Method not allowed",
+                   500: "Internal server error",
+                   1001: "Warning",
+                   1002: "Deprecated",
+                   1003: "Maintaining",
+                   9999: "Unknown error"}

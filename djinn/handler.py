@@ -74,6 +74,7 @@ class BaseHandler(BaseRequestHandler):
 class APIHandler(BaseHandler):
 
     def finish(self, chunk=None, message=None):
+        _ = self.locale.translate
         if chunk is None:
             chunk = {}
 
@@ -81,8 +82,9 @@ class APIHandler(BaseHandler):
             chunk = {"meta": {"code": errors.HTTP_OK}, "data": chunk}
 
             if message:
-                chunk["message"] = message
+                chunk["message"] = _(message)
         elif isinstance(chunk, errors.HTTPAPIError):
+            chunk.message = _(chunk.message)
             chunk = str(chunk)
 
         callback = escape.utf8(self.get_argument("callback", None))
