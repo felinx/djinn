@@ -20,7 +20,7 @@ try:
 except ImportError:
     pass
 
-version = "1.0.7"
+version = "1.0.8"
 
 distutils.core.setup(
     name="djinn",
@@ -30,7 +30,7 @@ distutils.core.setup(
     package_data={'djinn': ['translations/*.csv']},
     author="Felinx Lee",
     author_email="felinx.lee@gmail.com",
-    url="https://github.com/palmhold/djinn",
+    url="https://github.com/felinx/djinn",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     description="Djinn is a micro-framework which wraps Tornado to make it easy to write a web application using Tornado.",
 )
