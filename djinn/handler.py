@@ -118,9 +118,6 @@ class APIHandler(BaseHandler):
             if status_code == errors.ERROR_INTERNAL_SERVER_ERROR \
                     and not options.debug:
                 self.send_error_mail(exception)
-
-            if options.debug:
-                e.data["exception"] = exception
             logging.warning("Exception: %s", exception)
 
             self.clear()
