@@ -20,7 +20,7 @@ try:
 except ImportError:
     pass
 
-version = "1.0.10"
+version = "1.1.0"
 
 distutils.core.setup(
     name="djinn",

@@ -33,7 +33,7 @@ class RstoreManager(object):
 
     def __init__(self, datastore_pool):
         for k, v in datastore_pool.iteritems():
-            RstoreManager._datastore_pool[k] = redis.Redis(v[0], v[1])
+            RstoreManager._datastore_pool[k] = redis.Redis(**v)
 
     def __getattr__(self, instance):
         r = self._datastore_pool.get(instance, None)
