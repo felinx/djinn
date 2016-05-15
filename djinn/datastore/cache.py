@@ -31,13 +31,13 @@ manager = None
 def cache(key=None, timeout=3600, args_as_key=True):
     def _wrapper(func):
         @functools.wraps(func)
-        def __wrapper(*args, **kw):
+        def __wrapper(self, *args, **kw):
             if not options.cache_enabled:
-                return func(*args, **kw)
+                return func(self, *args, **kw)
             _key = key_gen(key, func, args_as_key, *args, **kw)
             value = manager.get(_key)
             if not value:
-                value = func(*args, **kw)
+                value = func(self, *args, **kw)
                 if value:
                     manager.set(_key, value, timeout)
 
