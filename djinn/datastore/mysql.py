@@ -18,10 +18,12 @@ import time
 import logging
 import random
 from torndb import Connection as BaseConnection
-from tornado.options import options
+from tornado.options import options, define
 from tornado import escape
 
 from ..errors import DatastoreError
+
+define("log_db_query", True, bool, "whether log db query statements")
 
 manager = None
 
@@ -121,7 +123,7 @@ class Connection(BaseConnection):
             parameters_.append(parameter)
         parameters = tuple(parameters_)
 
-        if options.LOG_DB_QUERY:
+        if options.log_db_query:
             sql = query % parameters
             try:
                 start = time.time()

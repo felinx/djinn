@@ -161,20 +161,6 @@ def gen_uid(size=6, alphabet=ALPHABET_LOWER_ONLY):
     return "".join(s)
 
 
-def dict_value_to_string(data):
-    assert isinstance(data, dict), "data should be a dict"
-
-    for k, v in data.iteritems():
-        if isinstance(v, unicode):
-            data[k] = escape.utf8(v)
-        elif isinstance(v, dict):
-            data[k] = escape.json_encode(v)
-        else:
-            data[k] = v
-
-    return data
-
-
 def parse_on_off(status, default="on"):
     if not status:
         return default

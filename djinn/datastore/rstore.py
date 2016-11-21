@@ -36,12 +36,12 @@ class RstoreManager(object):
             RstoreManager._datastore_pool[k] = redis.Redis(**v)
 
     def __getattr__(self, instance):
-        r = self._datastore_pool.get(instance, None)
-        if not r:
+        conn = self._datastore_pool.get(instance, None)
+        if not conn:
             raise DatastoreError("Redis %s instance does not exist"
                                  % instance)
 
-        return r
+        return conn
 
 
 class RedistoreException(Exception):

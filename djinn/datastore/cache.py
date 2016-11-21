@@ -22,8 +22,6 @@ from tornado.escape import utf8
 from tornado.options import define, options
 
 define("cache_key_prefix", "", str, "cache key prefix to avoid key conflict")
-define("cache_key_prefix_another", "", str,
-       "another cache in different cache prefix, should be delete at the same time")
 define("cache_enabled", True, bool, "whether cache is enabled")
 manager = None
 
@@ -52,11 +50,6 @@ def delete(key):
     if options.cache_key_prefix:
         key = "%s:%s" % (options.cache_key_prefix, key_)
     manager.delete(key)
-
-    if options.cache_key_prefix_another:
-        another_key = "%s:%s" % (options.cache_key_prefix_another, key_)
-        if another_key != key:
-            manager.delete(another_key)
 
 
 def key_gen(key="", func=None, args_as_key=True, *args, **kw):
@@ -105,9 +98,9 @@ def reconnect(func):
     @functools.wraps(func)
     def _wrapper(self, *args, **kwargs):
         try:
-            r = func(self, *args, **kwargs)
+            ret = func(self, *args, **kwargs)
 
-            return r
+            return ret
         except Exception:
             logging.exception("memcache server closed!")
             self.close()
