@@ -25,7 +25,7 @@ version = "1.1.2"
 distutils.core.setup(
     name="djinn",
     version=version,
-    packages=["djinn", "djinn.datastore", "djinn.stats"],
+    packages=["djinn", "djinn.datastore"],
     package_dir={'djinn': 'djinn'},
     package_data={'djinn': ['translations/*.csv']},
     author="Felinx Lee",
