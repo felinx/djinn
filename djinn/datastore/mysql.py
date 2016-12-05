@@ -86,11 +86,11 @@ class MysqlMSConnection(object):
 
     @property
     def insert(self):
-        return self.slave.insert
+        return self.master.insert
 
     @property
     def update(self):
-        return self.slave.update
+        return self.master.update
 
     @property
     def slave(self):
