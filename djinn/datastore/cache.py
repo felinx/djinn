@@ -63,7 +63,7 @@ def key_gen(key="", func=None, args_as_key=True, *args, **kw):
             key = key % tuple(args_)
     else:
         code = hashlib.md5()
-        code.update("%s-%s" % (func.__module__, func.__name__))
+        code.update("%s-%s-%s" % (func.__file__, func.__module__, func.__name__))
 
         # copy args to avoid sort original args
         c = list(args[:])
@@ -79,6 +79,11 @@ def key_gen(key="", func=None, args_as_key=True, *args, **kw):
         code.update("".join(c))
 
         key = code.hexdigest()
+        
+        # salt used to reduce the same key
+        salt = func.__name__
+        code.update(salt)
+        key += code.hexdigest()[:3]
 
     if options.cache_key_prefix:
         key = "%s:%s" % (options.cache_key_prefix, key)
