@@ -31,7 +31,10 @@ def parse_config_file(filename):
     """
     config = {}
     execfile(filename, config, config)
+    del config["__builtins__"]
     for name in config:
+        if "__builtins__" == name:
+            continue
         if name in options._options:
             options._options[name].set(config[name])
         else:
