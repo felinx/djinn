@@ -30,7 +30,7 @@ def parse_config_file(filename):
     from a configuration file.
     """
     config = {}
-    execfile(filename, config, config)
+    execfile(filename, None, config)
     del config["__builtins__"]
     for name in config:
         if "__builtins__" == name:
