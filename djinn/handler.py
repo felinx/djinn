@@ -18,6 +18,11 @@ import re
 import traceback
 import logging
 
+try:
+    import ujson as json
+except ImportError:
+    import json
+
 from tornado import escape
 from tornado.options import options
 from tornado.web import RequestHandler as BaseRequestHandler, HTTPError
@@ -28,7 +33,6 @@ REMOVE_SLASH_RE = re.compile(".+/$")
 
 
 class BaseHandler(BaseRequestHandler):
-
     def prepare(self):
         self.remove_slash()
         self.prepare_context()
@@ -72,7 +76,6 @@ class BaseHandler(BaseRequestHandler):
 
 
 class APIHandler(BaseHandler):
-
     def finish(self, chunk=None, message=None):
         _ = self.locale.translate
         if chunk is None:
@@ -98,6 +101,8 @@ class APIHandler(BaseHandler):
             super(APIHandler, self).finish()
         else:
             self.set_header("Content-Type", "application/json; charset=UTF-8")
+            if isinstance(chunk, dict):
+                chunk = json.dumps(chunk, ensure_ascii=False, sort_keys=True)
             super(APIHandler, self).finish(chunk)
 
     def write_error(self, status_code, **kwargs):
@@ -135,7 +140,6 @@ class APIHandler(BaseHandler):
 
 
 class ErrorHandler(BaseHandler):
-
     """Default 404: Not Found handler."""
 
     def prepare(self):
@@ -144,7 +148,6 @@ class ErrorHandler(BaseHandler):
 
 
 class APIErrorHandler(APIHandler):
-
     """Default API 404: Not Found handler."""
 
     def prepare(self):

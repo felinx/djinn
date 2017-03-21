@@ -30,7 +30,7 @@ def parse_config_file(filename):
     from a configuration file.
     """
     config = {}
-    execfile(filename, config, config)
+    execfile(filename, None, config)
     for name in config:
         if name in options._options:
             options._options[name].set(config[name])

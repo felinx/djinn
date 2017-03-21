@@ -23,9 +23,11 @@ def authenticated(method):
 
     Just raise 401
     """
+
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
         if not self.current_user:
             raise HTTPError(401)
         return method(self, *args, **kwargs)
+
     return wrapper
