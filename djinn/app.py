@@ -23,7 +23,6 @@ from tornado.web import Application
 
 
 class DjinnApplication(Application):
-
     """Base Application for djinn framework"""
 
     def reverse_api(self, request):
@@ -36,6 +35,7 @@ class DjinnApplication(Application):
                 return spec.name
 
         return None
+
 
 translation_folder = "translations"
 here = os.path.dirname(os.path.realpath(__file__))

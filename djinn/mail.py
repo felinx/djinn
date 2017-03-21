@@ -83,7 +83,6 @@ def send_email(fr, to, subject, body, html=None, attachments=[]):
 
 
 class EmailAddress(object):
-
     def __init__(self, addr, name=""):
         assert _email_re.match(addr), "Email address(%s) is invalid." % addr
 
@@ -98,7 +97,6 @@ class EmailAddress(object):
 
 
 class _SMTPSession(object):
-
     def __init__(self, host, user='', password='', duration=30, tls=False):
         self.host = host
         self.user = user
@@ -154,5 +152,6 @@ def _get_session():
                                 options.smtp['tls'])
 
     return _session
+
 
 _session = None
