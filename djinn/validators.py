@@ -21,7 +21,6 @@ from djinn import errors
 
 
 class Validator(object):
-
     """Basic Validator class"""
     _error_message = "%s is an invalid param"
 
@@ -36,10 +35,15 @@ class Validator(object):
             def __validate(handler, *args, **kwargs):
                 # validate handler.arguments
                 self.handler = handler
+                # if set default argument to None, and this argument not in request arguments,
+                # then the this argument`s validator will pass.
+                if self.get_argument(self.param) is None and self.default is None:
+                    return func(handler, *args, **kwargs)
                 self.validate()
                 return func(handler, *args, **kwargs)
 
             return __validate
+
         self._validate = _validate
 
     def __call__(self, *args, **kwargs):
@@ -183,14 +187,13 @@ class Email(Regex):
 
     def __init__(self, param, message=None, code=400):
         # borrow email re pattern from django
-        regex =  r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+)*" \
-            r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*"' \
-            r")@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$"
+        regex = r"(^[-!#$%&'*+/=?^_`{}|~0-9A-Z]+(\.[-!#$%&'*+/=?^_`{}|~0-9A-Z]+)*" \
+                r'|^"([\001-\010\013\014\016-\037!#-\[\]-\177]|\\[\001-011\013\014\016-\177])*"' \
+                r")@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$"
         flags = re.IGNORECASE
         default = ""
 
-        super(Email, self).__init__(param, regex,
-                                    flags, default, message, code)
+        super(Email, self).__init__(param, regex, flags, default, message, code)
 
 
 required = Required
