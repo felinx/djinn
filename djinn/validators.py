@@ -37,7 +37,7 @@ class Validator(object):
                 self.handler = handler
                 # if set default argument to None, and this argument not in request arguments,
                 # then the this argument`s validator will pass.
-                if self.get_argument(self.param) is None and self.default is None:
+                if self.get_argument(self.param, None) is None and self.default is None:
                     return func(handler, *args, **kwargs)
                 self.validate()
                 return func(handler, *args, **kwargs)
