@@ -22,8 +22,8 @@ import importlib
 from tornado.web import url
 from tornado.options import options
 from tornado import escape
-from torndb import Row
 
+from djinn.db import Row
 from djinn.errors import TemplateContextError
 
 ALPHABET_FULL = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
@@ -114,7 +114,7 @@ def load_url_handlers(handlers_root_module, handlers_modules,
 def get_count(row):
     """Get count from a query result
 
-    ``row``: Row object of a torndb query result
+    ``row``: Row object of a db query result
     """
     if row:
         count = row.c  # c as count by name convention
@@ -127,7 +127,7 @@ def get_count(row):
 def get_column_values(rows, column=None):
     """Get all values of a column from a query result
 
-    ``rows``: A list of Row object of a torndb query result
+    ``rows``: A list of Row object of a db query result
     ``column``: Column name which value will be collected
     """
     result = []
