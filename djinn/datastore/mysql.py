@@ -17,7 +17,7 @@
 import time
 import logging
 import random
-from torndb import Connection as BaseConnection
+from djinn.db import Connection as BaseConnection
 from tornado.options import options, define
 from tornado import escape
 
@@ -107,7 +107,7 @@ class Connection(BaseConnection):
             "password": None,
             "charset": "utf8mb4",
             "max_idle_time": 7 * 3600,
-            "connect_timeout": 0,
+            "connect_timeout": 10,
             "time_zone": "+8:00"
         }
         default_options.update(options)

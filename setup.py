@@ -33,4 +33,7 @@ distutils.core.setup(
     url="https://github.com/felinx/djinn",
     license="http://www.apache.org/licenses/LICENSE-2.0",
     description="Djinn is a micro-framework which wraps Tornado to make it easy to write a web application using Tornado.",
+    install_requires=[
+        "pymysql",
+    ]
 )
