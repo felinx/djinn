@@ -16,6 +16,7 @@
 
 """tornado.options enhancement"""
 
+import io
 import traceback
 import os
 
@@ -30,7 +31,8 @@ def parse_config_file(filename):
     from a configuration file.
     """
     config = {}
-    execfile(filename, {}, config)
+    exec(compile(io.open(filename, encoding="UTF-8").read(), filename, "exec"), {}, config)
+
     for name in config:
         if name in options._options:
             options._options[name].set(config[name])
@@ -43,15 +45,15 @@ def parse_options(root_dir, settings_file="settings", parse_cmd=True):
     try:
         parse_config_file(os.path.join(root_dir, "%s.py" % settings_file))
         # print "Using settings.py as default settings."
-    except Exception, exc:
-        print "No any default settings, are you sure? Exception: %s" % exc
+    except Exception as exc:
+        print("No any default settings, are you sure? Exception: %s" % exc)
 
     try:
         parse_config_file(
             os.path.join(root_dir, "%s_local.py" % settings_file))
         # print "Override some settings with local settings."
-    except Exception, exc:
-        print "No local settings. Exception: %s" % exc
+    except Exception as exc:
+        print("No local settings. Exception: %s" % exc)
         # print traceback.format_exc()
 
     if parse_cmd:

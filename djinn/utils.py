@@ -18,13 +18,16 @@
 
 import re
 import random
-import importlib
+
+from six.moves import range
 from tornado.web import url
 from tornado.options import options
 from tornado import escape
 
+from djinn.compat import import_module
 from djinn.db import Row
 from djinn.errors import TemplateContextError
+
 
 ALPHABET_FULL = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
 ALPHABET_LOWER_ONLY = '23456789abcdefghijkmnpqrstuvwxyz'
@@ -85,8 +88,7 @@ def load_url_handlers(handlers_root_module, handlers_modules,
     """
     handlers = []
     for handlers_module in handlers_modules:
-        module = importlib.import_module(".%s" %
-                                         handlers_module, handlers_root_module)
+        module = import_module(".%s" % handlers_module, handlers_root_module)
         module_hanlders = getattr(module, "handlers", None)
         if module_hanlders:
             _handlers = []
@@ -155,7 +157,7 @@ def pick_row_attrs(row, attrs):
 def gen_uid(size=6, alphabet=ALPHABET_LOWER_ONLY):
     s = []
     # random part of uid
-    for i in xrange(0, size):
+    for i in range(0, size):
         s.append(random.choice(alphabet))
 
     return "".join(s)

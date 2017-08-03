@@ -65,8 +65,7 @@ class BaseHandler(BaseRequestHandler):
 
     def get_argument(self, name, default=BaseRequestHandler._ARG_DEFAULT, strip=True):
         value = super(BaseHandler, self).get_argument(name, default, strip)
-
-        return escape.utf8(value) if isinstance(value, unicode) else value
+        return escape.utf8(value)
 
     def get_int_argument(self, name, default=0):
         try:

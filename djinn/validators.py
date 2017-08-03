@@ -18,6 +18,7 @@ import re
 import functools
 from tornado.escape import to_unicode
 from djinn import errors
+from six import PY2
 
 
 class Validator(object):
@@ -154,6 +155,9 @@ class Enum(Validator):
             except TypeError:
                 # ingore type error
                 pass
+
+        if not PY2 and isinstance(value, bytes):
+            value = value.decode()
 
         if value not in self.enum:
             # try type detection

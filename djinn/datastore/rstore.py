@@ -15,6 +15,9 @@
 # under the License.
 
 import redis
+
+from six import iteritems
+
 from ..errors import DatastoreError
 
 manager = None
@@ -32,7 +35,7 @@ class RstoreManager(object):
     _datastore_pool = {}
 
     def __init__(self, datastore_pool):
-        for k, v in datastore_pool.iteritems():
+        for k, v in iteritems(datastore_pool):
             RstoreManager._datastore_pool[k] = redis.Redis(**v)
 
     def __getattr__(self, instance):
