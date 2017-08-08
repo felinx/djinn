@@ -23,20 +23,20 @@ from ..errors import DatastoreError
 manager = None
 
 
-def setup(redis_pool):
+def setup(redis_pool, decode_responses=False):
     global manager
 
     if manager is None:
-        manager = RstoreManager(redis_pool)
+        manager = RstoreManager(redis_pool, decode_responses=decode_responses)
     return manager
 
 
 class RstoreManager(object):
     _datastore_pool = {}
 
-    def __init__(self, datastore_pool):
+    def __init__(self, datastore_pool, decode_responses=False):
         for k, v in iteritems(datastore_pool):
-            RstoreManager._datastore_pool[k] = redis.Redis(**v)
+            RstoreManager._datastore_pool[k] = redis.Redis(decode_responses=decode_responses, **v)
 
     def __getattr__(self, instance):
         conn = self._datastore_pool.get(instance, None)
