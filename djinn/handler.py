@@ -23,6 +23,7 @@ try:
 except ImportError:
     import json
 
+from six import text_type
 from tornado import escape
 from tornado.options import options
 from tornado.web import RequestHandler as BaseRequestHandler, HTTPError
@@ -65,7 +66,7 @@ class BaseHandler(BaseRequestHandler):
 
     def get_argument(self, name, default=BaseRequestHandler._ARG_DEFAULT, strip=True):
         value = super(BaseHandler, self).get_argument(name, default, strip)
-        return escape.utf8(value)
+        return escape.utf8(value) if isinstance(value, text_type) else value
 
     def get_int_argument(self, name, default=0):
         try:
