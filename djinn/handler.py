@@ -64,9 +64,9 @@ class BaseHandler(BaseRequestHandler):
 
         return super(BaseHandler, self).render_string(template_name, **kwargs)
 
-    def get_argument(self, name, default=BaseRequestHandler._ARG_DEFAULT, strip=True):
+    def get_argument(self, name, default=BaseRequestHandler._ARG_DEFAULT, strip=True, as_bytes=True):
         value = super(BaseHandler, self).get_argument(name, default, strip)
-        return escape.utf8(value) if isinstance(value, text_type) else value
+        return escape.utf8(value) if as_bytes and isinstance(value, text_type) else value
 
     def get_int_argument(self, name, default=0):
         try:
