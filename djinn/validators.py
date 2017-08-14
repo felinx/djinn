@@ -126,14 +126,25 @@ class PlainText(String):
 
 
 class Integer(Validator):
-    _error_message = "%s should be integer"
+    _error_message = "%s is an invalid integer"
 
-    def __init__(self, param, default=0, message=None, code=400):
+    def __init__(self, param, default=0, floor=None, ceil=None, message=None, code=400):
+        self._floor = floor
+        self._ceil = ceil
         super(Integer, self).__init__(param, default, message, code)
+
+    def __check_limit(self, v):
+        if self._floor is not None and v < self._floor:
+            self._error_message = "%s is less than lower limit {0}".format(self._floor)
+            raise Exception
+        if self._ceil is not None and v > self._ceil:
+            self._error_message = "%s is more than upper limit {0}".format(self._ceil)
+            raise Exception
 
     def validate(self):
         try:
-            int(self.get_argument(self.param, self.default))
+            v = int(self.get_argument(self.param, self.default))
+            self.__check_limit(v)
         except Exception:
             self.handle_error(self.param)
 
