@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from six import PY2
+
 from tornado import escape
 from tornado.web import HTTPError
 
@@ -83,7 +85,11 @@ class HTTPAPIError(HTTPError):
                  error=None, data=None, *args, **kwargs):
         assert isinstance(data, dict) or data is None
         message = message if message else ""
-        assert isinstance(message, basestring)
+
+        if PY2:
+            assert isinstance(message, basestring)
+        else:
+            assert isinstance(message, (str, bytes))
 
         super(HTTPAPIError, self).__init__(int(status_code),
                                            log_message=message, *args, **kwargs)

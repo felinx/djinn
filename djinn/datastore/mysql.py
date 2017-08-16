@@ -17,7 +17,9 @@
 import time
 import logging
 import random
+
 from djinn.db import Connection as BaseConnection
+from six import iteritems, PY2
 from tornado.options import options, define
 from tornado import escape
 
@@ -40,7 +42,7 @@ class MysqlManager(object):
     _datastore_pool = {}
 
     def __init__(self, datastore_pool):
-        for k, v in datastore_pool.iteritems():
+        for k, v in iteritems(datastore_pool):
             MysqlManager._datastore_pool[k] = MysqlMSConnection(v[0], v[1])
 
     def __getattr__(self, instance):
@@ -118,7 +120,7 @@ class Connection(BaseConnection):
         # Override default _execute to log executing info when log_query is on
         parameters_ = []
         for parameter in parameters:
-            if isinstance(parameter, unicode):
+            if isinstance(parameter, unicode if PY2 else str):
                 parameter = escape.utf8(parameter)
             parameters_.append(parameter)
         parameters = tuple(parameters_)
@@ -134,7 +136,7 @@ class Connection(BaseConnection):
                              elapse, self.host, sql)
 
                 return r
-            except Exception, e:
+            except Exception as e:
                 logging.error("SQL: %s", sql)
                 raise e
         else:

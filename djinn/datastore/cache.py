@@ -17,7 +17,9 @@
 import hashlib
 import logging
 import functools
+
 import memcache
+from six import PY2, iteritems
 from tornado.escape import utf8
 from tornado.options import define, options
 
@@ -58,7 +60,11 @@ def key_gen(key="", func=None, args_as_key=True, *args, **kw):
         if args_as_key and "%s" in key:
             args_ = []
             for arg in args:
-                if isinstance(arg, (basestring, unicode, int, long)):
+                if PY2:
+                    cls_tup = (basestring, unicode, int, long)
+                else:
+                    cls_tup = (str, bytes, int)
+                if isinstance(arg, cls_tup):
                     args_.append(arg)
             key = key % tuple(args_)
     else:
@@ -70,11 +76,15 @@ def key_gen(key="", func=None, args_as_key=True, *args, **kw):
         # sort c to avoid generate different key when args is the same
         # but sequence is different
         c.sort()
-        c = [utf8(v) if isinstance(v, (basestring, unicode))
+        if PY2:
+            cls_tup = (basestring, unicode)
+        else:
+            cls_tup = (str, bytes)
+        c = [utf8(v) if isinstance(v, cls_tup)
              else str(v) for v in c]
         code.update("".join(c))
 
-        c = ["%s=%s" % (k, v) for k, v in kw.iteritems()]
+        c = ["%s=%s" % (k, v) for k, v in iteritems(kw)]
         c.sort()
         code.update("".join(c))
 
@@ -131,7 +141,7 @@ class CacheManager(object):
 
     @reconnect
     def add(self, key, value, timeout=0):
-        if isinstance(value, unicode):
+        if isinstance(value, unicode if PY2 else str):
             value = utf8(value)
 
         return self.cache.add(utf8(key), value,
@@ -143,14 +153,14 @@ class CacheManager(object):
         if val is None:
             return default
         else:
-            if isinstance(val, basestring):
+            if isinstance(val, basestring if PY2 else (str, bytes)):
                 return utf8(val)
             else:
                 return val
 
     @reconnect
     def set(self, key, value, timeout=0):
-        if isinstance(value, unicode):
+        if isinstance(value, unicode if PY2 else str):
             value = utf8(value)
         return self.cache.set(utf8(key), value,
                               timeout or self.default_timeout)
