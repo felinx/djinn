@@ -20,6 +20,7 @@ import io
 import traceback
 import os
 
+from six import PY2
 from tornado.options import parse_command_line, options, define
 
 
@@ -31,7 +32,10 @@ def parse_config_file(filename):
     from a configuration file.
     """
     config = {}
-    exec(compile(io.open(filename, encoding="UTF-8").read(), filename, "exec"), {}, config)
+    if PY2:
+        execfile(filename, {}, config)
+    else:
+        exec(compile(io.open(filename, encoding="UTF-8").read(), filename, "exec"), {}, config)
 
     for name in config:
         if name in options._options:
