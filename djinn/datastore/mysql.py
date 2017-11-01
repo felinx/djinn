@@ -132,7 +132,7 @@ class Connection(BaseConnection):
                 r = super(Connection, self)._execute(cursor, query, parameters,
                                                      kwparameters)
                 elapse = time.time() - start
-                logging.info("SQL executing elapse %s seconds on %s: %s",
+                logging.debug("SQL executing elapse %s seconds on %s: %s",
                              elapse, self.host, sql)
 
                 return r
