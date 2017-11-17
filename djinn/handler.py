@@ -123,7 +123,6 @@ class APIHandler(BaseHandler):
             if status_code == errors.ERROR_INTERNAL_SERVER_ERROR \
                     and not options.debug:
                 self.send_error_mail(exception)
-            logging.warning("Exception: %s", exception)
 
             self.clear()
             # always return 200 OK for API errors
