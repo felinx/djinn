@@ -31,7 +31,7 @@ def parse_config_file(filename):
     from a configuration file.
     """
     config = {}
-    exec(compile(io.open(filename, encoding="UTF-8").read(), filename, "exec"), {}, config)
+    exec(compile(io.open(filename, encoding="UTF-8").read().encode("UTF-8"), filename, "exec"), {}, config)
 
     for name in config:
         if name in options._options:
