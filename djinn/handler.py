@@ -32,6 +32,8 @@ from djinn.utils import Context
 
 REMOVE_SLASH_RE = re.compile(".+/$")
 
+logger = logging.getLogger(__name__)
+
 
 class BaseHandler(BaseRequestHandler):
     def prepare(self):
@@ -130,7 +132,7 @@ class APIHandler(BaseHandler):
             self.set_header("Content-Type", "application/json; charset=UTF-8")
             self.finish(e)
         except Exception:
-            logging.error(traceback.format_exc())
+            logger.error(traceback.format_exc())
             return super(APIHandler, self).write_error(status_code, **kwargs)
 
     def send_error_mail(self, exception):

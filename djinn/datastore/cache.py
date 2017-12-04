@@ -27,6 +27,8 @@ define("cache_key_prefix", "", str, "cache key prefix to avoid key conflict")
 define("cache_enabled", True, bool, "whether cache is enabled")
 manager = None
 
+logger = logging.getLogger(__name__)
+
 
 def cache(key=None, timeout=3600, args_as_key=True):
     def _wrapper(func):
@@ -117,7 +119,7 @@ def reconnect(func):
 
             return ret
         except Exception:
-            logging.exception("memcache server closed!")
+            logger.exception("memcache server closed!")
             self.close()
 
     return _wrapper
@@ -130,7 +132,7 @@ class CacheManager(object):
         self.default_timeout = int(timeout)
         self._cache = memcache.Client(self.servers)
 
-        logging.debug("Memcached start client %s" % servers)
+        logger.debug("Memcached start client %s" % servers)
 
     @property
     def cache(self):

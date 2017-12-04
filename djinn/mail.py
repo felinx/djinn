@@ -40,6 +40,9 @@ _email_re = re.compile(
     r')@(?:[A-Z0-9]+(?:-*[A-Z0-9]+)*\.)+[A-Z]{2,6}$', re.IGNORECASE)  # domain
 
 
+logger = logging.getLogger(__name__)
+
+
 def send_email(fr, to, subject, body, html=None, attachments=[]):
     """Send an email.
 
@@ -115,7 +118,7 @@ class _SMTPSession(object):
             self.session.sendmail(fr, to, message)
         except Exception as e:
             err = "Send email from %s to %s failed!\n Exception: %s!"
-            logging.error(err, fr, to, e)
+            logger.error(err, fr, to, e)
             self.renew()
 
     @property

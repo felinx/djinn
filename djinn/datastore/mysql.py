@@ -29,6 +29,7 @@ define("log_db_query", True, bool, "whether log db query statements")
 
 manager = None
 
+logger = logging.getLogger(__name__)
 
 def setup(datastore_pool):
     global manager
@@ -132,12 +133,12 @@ class Connection(BaseConnection):
                 r = super(Connection, self)._execute(cursor, query, parameters,
                                                      kwparameters)
                 elapse = time.time() - start
-                logging.debug("SQL executing elapse %s seconds on %s: %s",
+                logger.debug("SQL executing elapse %s seconds on %s: %s",
                              elapse, self.host, sql)
 
                 return r
             except Exception as e:
-                logging.error("SQL: %s", sql)
+                logger.error("SQL: %s", sql)
                 raise e
         else:
             return super(Connection, self)._execute(cursor, query, parameters, kwparameters)
