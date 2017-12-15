@@ -27,14 +27,23 @@ class DjinnApplication(Application):
 
     def reverse_api(self, request):
         """Returns a URL name for a request"""
-        handlers = self._get_host_handlers(request)
+        rule_name = None
+        
+        if hasattr(self, "_get_host_handlers"):
+            # legacy
+            handlers = self._get_host_handlers(request)
+            for spec in handlers:
+                match = spec.regex.match(request.path)
+                if match:
+                    rule_name = spec.name
+                    break
+        else:
+            for rule in self.wildcard_router.rules:
+                if rule.matcher.match(request) is not None:
+                    rule_name = rule.name
+                    break
 
-        for spec in handlers:
-            match = spec.regex.match(request.path)
-            if match:
-                return spec.name
-
-        return None
+        return rule_name
 
 
 translation_folder = "translations"
