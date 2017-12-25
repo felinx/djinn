@@ -44,7 +44,7 @@ class Connection(object):
     Arguments read_timeout and write_timeout can be passed using kwargs, if MySQL version > 5.1.12.
     """
     def __init__(self, host, database, user=None, password=None,
-                 max_idle_time=7 * 3600, connect_timeout=0,
+                 max_idle_time=7 * 3600, connect_timeout=10,
                  time_zone="+0:00", charset = "utf8", sql_mode="TRADITIONAL",
                  **kwargs):
         self.host = host
