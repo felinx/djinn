@@ -16,7 +16,6 @@
 
 import time
 import logging
-import random
 
 from djinn.db import Connection as BaseConnection
 from six import iteritems, PY2
@@ -44,7 +43,7 @@ class MysqlManager(object):
 
     def __init__(self, datastore_pool):
         for k, v in iteritems(datastore_pool):
-            MysqlManager._datastore_pool[k] = MysqlMSConnection(v[0], v[1])
+            MysqlManager._datastore_pool[k] = MysqlMSConnection(v[0])
 
     def __getattr__(self, instance):
         r = self._datastore_pool.get(instance, None)
@@ -57,27 +56,22 @@ class MysqlManager(object):
 
 class MysqlMSConnection(object):
 
-    """Mysql master & slave connection
+    """Mysql connection
 
-    Manage datastore connection instances, it selects master or slave instance
-    according to SQL statement automatically.
+    Manage datastore connection instances.
 
     """
 
-    def __init__(self, master, slaves):
+    def __init__(self, master):
         self.master = Connection(master)
-
-        self._slave_conns = []
-        for slave in slaves:
-            self._slave_conns.append(Connection(slave))
 
     @property
     def query(self):
-        return self.slave.query
+        return self.master.query
 
     @property
     def get(self):
-        return self.slave.get
+        return self.master.get
 
     @property
     def execute(self):
@@ -97,7 +91,7 @@ class MysqlMSConnection(object):
 
     @property
     def slave(self):
-        return random.choice(self._slave_conns)
+        return self.master
 
 
 class Connection(BaseConnection):
