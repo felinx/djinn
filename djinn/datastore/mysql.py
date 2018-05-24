@@ -65,6 +65,9 @@ class MysqlMSConnection(object):
     def __init__(self, master):
         self.master = Connection(master)
 
+        # Kept for compatibility
+        self._slave_conns = []
+
     @property
     def query(self):
         return self.master.query
