@@ -146,12 +146,12 @@ class CacheManager(object):
         if isinstance(value, unicode if PY2 else str):
             value = utf8(value)
 
-        return self.cache.add(utf8(key), value,
+        return self.cache.add(key, value,
                               timeout or self.default_timeout)
 
     @reconnect
     def get(self, key, default=None):
-        val = self.cache.get(utf8(key))
+        val = self.cache.get(key)
         if val is None:
             return default
         else:
@@ -164,16 +164,16 @@ class CacheManager(object):
     def set(self, key, value, timeout=0):
         if isinstance(value, unicode if PY2 else str):
             value = utf8(value)
-        return self.cache.set(utf8(key), value,
+        return self.cache.set(key, value,
                               timeout or self.default_timeout)
 
     @reconnect
     def delete(self, key):
-        return self.cache.delete(utf8(key))
+        return self.cache.delete(key)
 
     @reconnect
     def get_many(self, keys):
-        return self.cache.get_multi(map(utf8, keys))
+        return self.cache.get_multi(keys)
 
     def close(self, **kwargs):
         try:
