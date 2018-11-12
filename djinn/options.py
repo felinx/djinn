@@ -34,10 +34,10 @@ def parse_config_file(filename):
     exec(compile(io.open(filename, encoding="UTF-8").read().encode("UTF-8"), filename, "exec"), {}, config)
 
     for name in config:
-        if name in options._options:
-            options._options[name].set(config[name])
+        if name in options:
+            options[name] = config[name]
         else:
-            define(name, config[name])
+            options.define(name, config[name])
 
 
 def parse_options(root_dir, settings_file="settings", parse_cmd=True):
