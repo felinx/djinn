@@ -9,5 +9,5 @@ Notice
 
 ## License
 
-djinn is under Apache 2.0 license.
+djinn is under Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
 
